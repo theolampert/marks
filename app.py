@@ -1,7 +1,6 @@
 import os
 import sqlite3
 
-port = os.getenv('PORT', default=8080)
 database = os.getenv('DATABASE', default='example.db')
 
 conn = sqlite3.connect(database)

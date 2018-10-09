@@ -1,1 +1,1 @@
-pypy3 app.py
+pypy3 server.py

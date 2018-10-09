@@ -1,8 +1,10 @@
+import json
+import os
 from app import create_bookmark, get_bookmarks
 from http.server import BaseHTTPRequestHandler, HTTPServer
-import json
 
 
+port = os.getenv('PORT', default=8080)
 class RequestHandler(BaseHTTPRequestHandler):
 
   def do_GET(self):
