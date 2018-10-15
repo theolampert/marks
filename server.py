@@ -20,7 +20,7 @@ def get_db():
 
 @app.route('/')
 def hello_world():
-    return 'Hello, World!'
+    return 'Hello, world!'
 
 
 @app.route('/bookmarks')
@@ -42,4 +42,3 @@ def close_connection(exception):
     db = getattr(g, '_database', None)
     if db is not None:
         db.close()
-
