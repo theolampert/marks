@@ -1,17 +1,25 @@
+import os
 import unittest
-from app import bootstrap, create_bookmark, get_bookmarks
+from database import bootstrap, create_bookmark, get_bookmarks
 
+import sqlite3
+
+
+DATABASE = os.getenv('DATABASE', default='__test.db')
+conn = sqlite3.connect(DATABASE)
+cursor = conn.cursor()
 
 class TestBookmarks(unittest.TestCase):
     def setUp(self):
-        bootstrap()
+        bootstrap(cursor)
 
     def test_create(self):
         url = 'https://foobar.com'
         tags = ['foo', 'bar']
 
-        create_bookmark(url, tags)
-        bookmarks = get_bookmarks()
+        create_bookmark(url, tags, cursor)
+        conn.commit()
+        bookmarks = get_bookmarks(cursor)
         bookmark = bookmarks[0]
 
         self.assertEqual(len(bookmarks), 1)

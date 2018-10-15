@@ -1,59 +1,45 @@
+import sqlite3
 import json
 import os
-from app import create_bookmark, get_bookmarks
-from http.server import BaseHTTPRequestHandler, HTTPServer
+
+from flask import Flask, jsonify, g, request
+
+from database import create_bookmark, get_bookmarks
 
 
-port = os.getenv('PORT', default=8080)
-class RequestHandler(BaseHTTPRequestHandler):
+app = Flask(__name__)
+DATABASE = os.getenv('DATABASE', default='example.db')
 
-  def do_GET(self):
-        self.send_response(200)
 
-        path = self.path
+def get_db():
+    db = getattr(g, '_database', None)
+    if db is None:
+        db = g._database = sqlite3.connect(DATABASE)
+    return db
 
-        if path == '/bookmarks':
-            self.send_header('Content-type', 'application/json')
-            message = json.dumps(get_bookmarks())
-        elif path == '/tags':
-            self.send_header('Content-type', 'application/json')
-            message = json.dumps(get_tags())
-        elif path == '/urls':
-            self.send_header('Content-type', 'application/json')
-            message = json.dumps(get_urls())
 
-        self.end_headers()
-        self.wfile.write(bytes(message, 'utf8'))
-        return
+@app.route('/')
+def hello_world():
+    return 'Hello, World!'
 
-  def do_POST(self):
-        self.send_response(200)
 
-        self.send_header('Content-type', 'application/json')
-        self.end_headers()
-        self.data_string = self.rfile.read(int(self.headers['Content-Length']))
+@app.route('/bookmarks')
+def all_bookmarks():
+    cur = get_db().cursor()
+    return jsonify(get_bookmarks(cur))
 
-        path = self.path
-        data = json.loads(self.data_string)
+@app.route('/bookmarks', methods=['POST'])
+def post_bookmarks():
+    db = get_db()
+    cur = db.cursor()
+    data = request.get_json()
+    create_bookmark(data['url'], data['tags'], cur)
+    db.commit()
+    return jsonify(data)
 
-        if path == '/bookmarks':
-            create_bookmark(data['url'], data['tags'])
-            message = json.dumps(data)
-        else:
-            message = json.dumps('Unsupported.')
+@app.teardown_appcontext
+def close_connection(exception):
+    db = getattr(g, '_database', None)
+    if db is not None:
+        db.close()
 
-        self.wfile.write(bytes(message, 'utf8'))
-        return
-
-  def do_DELETE(self):
-      self.send_response(200)
-      return
-
-def run():
-    server_address = ('127.0.0.1', port)
-    httpd = HTTPServer(server_address, RequestHandler)
-    print('🌺 Starting server on port {}'.format(port))
-    httpd.serve_forever()
-
-if __name__ == '__main__':
-    run()
