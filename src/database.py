@@ -1,14 +1,14 @@
 def bootstrap(cursor):
     cursor.execute('''
-        CREATE TABLE tags (
+        CREATE TABLE if not exists tags (
             name text UNIQUE NOT NULL PRIMARY KEY
         )''')
     cursor.execute('''
-        CREATE TABLE urls (
+        CREATE TABLE if not exists urls (
             url text UNIQUE NOT NULL PRIMARY KEY
         )''')
     cursor.execute('''
-        CREATE TABLE tags_urls (
+        CREATE TABLE if not exists tags_urls (
             url text,
             tag text,
             FOREIGN KEY (url) REFERENCES urls(url)

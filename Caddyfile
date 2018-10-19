@@ -1,0 +1,7 @@
+{$PROXY_HOST}:{$PROXY_PORT} {
+  proxy / web:5000 {
+    transparent
+    policy round_robin
+  }
+  tls {$PROXY_TLS}
+}

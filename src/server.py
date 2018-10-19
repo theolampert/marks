@@ -1,11 +1,11 @@
 import os
 import sqlite3
 
-from database import create_bookmark, get_bookmarks
+from database import bootstrap, create_bookmark, get_bookmarks
 from flask import Flask, g, jsonify, request
 
 app = Flask(__name__)
-DATABASE = os.getenv('DATABASE', default='example.db')
+DATABASE = os.getenv('DATABASE', default='database/example.db')
 
 
 def get_db():
@@ -13,6 +13,13 @@ def get_db():
     if db is None:
         db = g._database = sqlite3.connect(DATABASE)
     return db
+
+
+@app.before_first_request
+def setup_db():
+    print('Bootsraping database')
+    cur = get_db().cursor()
+    bootstrap(cur)
 
 
 @app.route('/')
