@@ -23,16 +23,16 @@ def create_bookmark(url, tags, cursor):
         cursor.execute('INSERT INTO tags_urls (url, tag) VALUES ("{}", "{}")'.format(url, tag))
 
 
-def get_tags():
+def get_tags(cursor):
     tags = []
-    for row in c.execute('SELECT * FROM tags'):
+    for row in cursor.execute('SELECT * FROM tags'):
         tags.append(row[0])
     return tags
 
 
-def get_urls():
+def get_urls(cursor):
     urls = []
-    for row in c.execute('SELECT * FROM urls'):
+    for row in cursor.execute('SELECT * FROM urls'):
         urls.append(row[0])
     return urls
 
@@ -40,10 +40,10 @@ def get_urls():
 def get_bookmarks(cursor):
     bookmarks = []
     for bookmark in cursor.execute('''
-        SELECT urls.url, GROUP_CONCAT(tags.name, ',') AS tags 
+        SELECT urls.url, GROUP_CONCAT(tags.name, ',') AS tags
         FROM urls
-        JOIN tags_urls ON urls.url = tags_urls.url 
-	JOIN tags ON tags_urls.tag = tags.name
+        JOIN tags_urls ON urls.url = tags_urls.url
+        JOIN tags ON tags_urls.tag = tags.name
         GROUP BY urls.url
     '''):
         bookmarks.append({
@@ -51,4 +51,3 @@ def get_bookmarks(cursor):
             'tags': bookmark[1].split(',')
             })
     return bookmarks
-

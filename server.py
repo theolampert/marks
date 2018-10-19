@@ -1,11 +1,8 @@
-import sqlite3
-import json
 import os
-
-from flask import Flask, jsonify, g, request
+import sqlite3
 
 from database import create_bookmark, get_bookmarks
-
+from flask import Flask, g, jsonify, request
 
 app = Flask(__name__)
 DATABASE = os.getenv('DATABASE', default='example.db')
@@ -28,6 +25,7 @@ def all_bookmarks():
     cur = get_db().cursor()
     return jsonify(get_bookmarks(cur))
 
+
 @app.route('/bookmarks', methods=['POST'])
 def post_bookmarks():
     db = get_db()
@@ -36,6 +34,7 @@ def post_bookmarks():
     create_bookmark(data['url'], data['tags'], cur)
     db.commit()
     return jsonify(data)
+
 
 @app.teardown_appcontext
 def close_connection(exception):

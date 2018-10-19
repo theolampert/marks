@@ -1,13 +1,13 @@
 import os
-import unittest
-from database import bootstrap, create_bookmark, get_bookmarks
-
 import sqlite3
+import unittest
 
+from database import bootstrap, create_bookmark, get_bookmarks
 
 DATABASE = os.getenv('DATABASE', default='__test.db')
 conn = sqlite3.connect(DATABASE)
 cursor = conn.cursor()
+
 
 class TestBookmarks(unittest.TestCase):
     def setUp(self):
@@ -29,5 +29,3 @@ class TestBookmarks(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-
-
