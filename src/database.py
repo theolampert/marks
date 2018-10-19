@@ -23,6 +23,38 @@ def create_bookmark(url, tags, cursor):
         cursor.execute('INSERT INTO tags_urls (url, tag) VALUES ("{}", "{}")'.format(url, tag))
 
 
+def seed(db):
+    cursor = db.cursor()
+    seeds = [
+        {
+            'url': 'http://google.com',
+            'tags': [ 'evil', 'boring' ]
+        },
+        {
+            'url': 'http://apple.com',
+            'tags': [ 'semi-evil', 'pretty-boring', 'boring' ]
+        },
+        {
+            'url': 'http://protonmail.com',
+            'tags': [ 'email', 'such' ]
+        },
+        {
+            'url': 'http://github.com/something',
+            'tags': [ 'code', 'programming', 'email' ]
+        },
+        {
+            'url': 'http://foobar.com',
+            'tags': [ 'fun', 'code' ]
+        }
+    ]
+
+    for seed in seeds:
+        print(seed)
+        create_bookmark(seed['url'], seed['tags'], cursor)
+        db.commit()
+
+
+
 def get_tags(cursor):
     tags = []
     for row in cursor.execute('SELECT * FROM tags'):

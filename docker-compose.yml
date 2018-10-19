@@ -14,7 +14,7 @@ services:
     build:
       context: github.com/abiosoft/caddy-docker.git
       args:
-        PLUGINS: 'http.login,http.jwt'
+        plugins: 'login,jwt'
     ports:
       - '80:80'
       - '443:443'

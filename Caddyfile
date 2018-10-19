@@ -1,7 +1,20 @@
 {$PROXY_HOST}:{$PROXY_PORT} {
+
+  jwt {
+    path /
+    allow sub bob
+  }
+
+  login / {
+    simple bob=secret,alice=secret
+  }
+
   proxy / web:5000 {
     transparent
     policy round_robin
   }
+
   tls {$PROXY_TLS}
+
 }
+

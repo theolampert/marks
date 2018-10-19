@@ -1,7 +1,7 @@
 import os
 import sqlite3
 
-from database import bootstrap, create_bookmark, get_bookmarks
+from database import bootstrap, seed, create_bookmark, get_bookmarks, get_tags
 from flask import Flask, g, jsonify, request
 
 app = Flask(__name__)
@@ -18,13 +18,21 @@ def get_db():
 @app.before_first_request
 def setup_db():
     print('Bootsraping database')
-    cur = get_db().cursor()
+    db = get_db()
+    cur = db.cursor()
     bootstrap(cur)
+    # seed(db)
 
 
 @app.route('/')
 def hello_world():
-    return 'Hello, world!'
+    return 'Hallo, world!'
+
+
+@app.route('/tags')
+def all_tags():
+    cur = get_db().cursor()
+    return jsonify(get_tags(cur))
 
 
 @app.route('/bookmarks')
