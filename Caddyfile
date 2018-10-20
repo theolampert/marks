@@ -1,12 +1,12 @@
-{$PROXY_HOST}:{$PROXY_PORT} {
+{$PROXY_HOST} {
 
   jwt {
     path /
-    allow sub bob
+    allow sub {$USERNAME}
   }
 
   login / {
-    simple bob=secret,alice=secret
+    simple {$USERNAME}={$PASSWORD}
   }
 
   proxy / web:5000 {

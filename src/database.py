@@ -17,10 +17,10 @@ def bootstrap(cursor):
 
 
 def create_bookmark(url, tags, cursor):
-    cursor.execute('INSERT INTO urls (url) VALUES ("{}")'.format(url))
+    cursor.execute('INSERT INTO urls (url) VALUES (?)', (url,))
     for tag in tags:
-        cursor.execute('INSERT OR IGNORE INTO tags (name) VALUES ("{}")'.format(tag))
-        cursor.execute('INSERT INTO tags_urls (url, tag) VALUES ("{}", "{}")'.format(url, tag))
+        cursor.execute('INSERT OR IGNORE INTO tags (name) VALUES (?)', (tag,))
+        cursor.execute('INSERT INTO tags_urls (url, tag) VALUES (?, ?)', (url, tag,))
 
 
 def seed(db):
@@ -90,9 +90,9 @@ def get_bookmarks_with_tag(cursor, tag):
         SELECT c1.url, GROUP_CONCAT(c2.tag, ',') AS tags
         FROM tags_urls AS c1
         JOIN tags_urls AS c2 ON c1.url = c2.url
-        WHERE c1.tag = '{}'
+        WHERE c1.tag = ?
         GROUP BY c1.url
-    '''.format(tag)):
+    ''', (tag,)):
         bookmarks.append({
             'url': bookmark[0],
             'tags': bookmark[1].split(',')
