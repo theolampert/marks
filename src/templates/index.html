@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="/static/style.css" rel="stylesheet" />
+  </head>
+  <title>Marks</title>
+  <body>
+    <form class="add_bookmark">
+      <input class="add_bookmark__bookmark" placeholder="bookmark" type="text">
+      <input class="add_bookmark__tags" placeholder="tags" type="text">
+      <input class="add_bookmark__submit" value="Add Bookmark" type="submit" />
+    </form>
+    <ul class="bookmark-wrapper">
+    {% for bookmark in bookmarks %}
+      <li class="bookmark-list">
+        <a class="bookmark__link" href="{{ bookmark.url }}">{{ bookmark.url }}</a>
+        {% for tag in bookmark.tags %}
+        <a class="bookmark__tag" href="/tags/{{ tag }}">{{ tag }}</a>
+        {% endfor %}
+      </li>
+    {% endfor %}
+    </ul>
+    <script>
+      const bookmarkList = document.querySelector('.bookmark-list');
+      const form = document.querySelector('.add_bookmark');
+
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const url = form.children[0].value;
+        const tags = form.children[1].value.split(' ');
+        const headers = new Headers();
+        headers.set('Content-Type', 'application/json');
+        const body = JSON.stringify({
+          url,
+          tags,
+        });
+
+        fetch('/bookmarks', {
+          method: 'POST',
+          headers,
+          body,
+        })
+          .then(r => r.json())
+          .then(r => {
+            const bmWrapper = document.createElement('li');
+            bmWrapper.classList.add('bookmark-list');
+            
+            const tagHtml = r.tags.map(t => `<a class="bookmark__tag" href="/tags/${t}">${t}</a>`);
+            console.log(tagHtml);
+  
+            bmWrapper.innerHTML = `
+              <li class="bookmark-list">
+                <a class="bookmark__link" href="${r.url}">${r.url}</a>
+                ${r.tags.map(t => `<a class="bookmark__tag" href="/tags/${t}">${t}</a>`)[0]}
+              </li>
+            `;
+ 
+            bookmarkList.appendChild(bmWrapper);
+          })
+          .catch(err => console.log(err))
+      });
+    </script>
+  </body>
+</html>

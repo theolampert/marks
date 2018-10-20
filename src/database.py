@@ -27,16 +27,16 @@ def seed(db):
     cursor = db.cursor()
     seeds = [
         {
-            'url': 'http://google.com',
-            'tags': [ 'evil', 'boring' ]
+            'url': 'https://teachyourselfcs.com',
+            'tags': [ 'books', 'programming', 'learning' ]
         },
         {
-            'url': 'http://apple.com',
-            'tags': [ 'semi-evil', 'pretty-boring', 'boring' ]
+            'url': 'https://xinyminutes.com',
+            'tags': [ 'programming', 'reference', 'cheat-sheet' ]
         },
         {
             'url': 'http://protonmail.com',
-            'tags': [ 'email', 'such' ]
+            'tags': [ 'email', 'privacy' ]
         },
         {
             'url': 'http://github.com/something',
@@ -78,6 +78,21 @@ def get_bookmarks(cursor):
         JOIN tags ON tags_urls.tag = tags.name
         GROUP BY urls.url
     '''):
+        bookmarks.append({
+            'url': bookmark[0],
+            'tags': bookmark[1].split(',')
+            })
+    return bookmarks
+
+def get_bookmarks_with_tag(cursor, tag):
+    bookmarks = []
+    for bookmark in cursor.execute('''
+        SELECT c1.url, GROUP_CONCAT(c2.tag, ',') AS tags
+        FROM tags_urls AS c1
+        JOIN tags_urls AS c2 ON c1.url = c2.url
+        WHERE c1.tag = '{}'
+        GROUP BY c1.url
+    '''.format(tag)):
         bookmarks.append({
             'url': bookmark[0],
             'tags': bookmark[1].split(',')

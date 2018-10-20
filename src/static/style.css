@@ -1,0 +1,44 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: white;
+  font-family: -apple-system;
+  padding: 1.25rem;
+}
+
+.bookmark {
+  margin-bottom: 1.25rem;
+  list-style: none;
+}
+
+
+.bookmark__link {
+  margin-bottom: 0.3125rem;
+  display: inline-block;
+  color: #357EDD;
+}
+
+.bookmark__link:focus::before {
+  content: '→ '
+}
+
+.bookmark__tag {
+  display: inline-block;
+  font-size: 0.75rem;
+  margin-right: 0.3125rem;
+  color: black;
+  background-color: #FBF1A9;
+  padding: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 3px;
+  border-radius: 12px;
+}
+
+.add_bookmark {
+  margin-bottom: 20px;
+}
