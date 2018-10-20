@@ -70,16 +70,11 @@
           .then(r => r.json())
           .then(r => {
             const bmWrapper = document.createElement('li');
-            bmWrapper.classList.add('bookmark-list');
-            
-            const tagHtml = r.tags.map(t => `<a class="bookmark__tag" href="/tags/${t}">${t}</a>`);
-            console.log(tagHtml);
+            bmWrapper.classList.add('bookmark');
   
             bmWrapper.innerHTML = `
-              <li class="bookmark-list">
-                <a class="bookmark__link" href="${r.url}">${r.url}</a>
-                ${r.tags.map(t => `<a class="bookmark__tag" href="/tags/${t}">${t}</a>`)[0]}
-              </li>
+              <a class="bookmark__link" href="${r.url}">${r.url}</a>
+              ${r.tags.map(t => `<a class="bookmark__tag" href="/tags/${t}">${t}</a>`).join('')}
             `;
  
             bookmarkList.appendChild(bmWrapper);
