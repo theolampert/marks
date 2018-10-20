@@ -12,17 +12,44 @@
     </form>
     <ul class="bookmark-wrapper">
     {% for bookmark in bookmarks %}
-      <li class="bookmark-list">
+      <li class="bookmark">
         <a class="bookmark__link" href="{{ bookmark.url }}">{{ bookmark.url }}</a>
         {% for tag in bookmark.tags %}
         <a class="bookmark__tag" href="/tags/{{ tag }}">{{ tag }}</a>
         {% endfor %}
+        <nav class="bookmark__controls">
+          <button>Edit</button>
+          <button class="delete_bookmark" data-url="{{ bookmark.url }}">Delete</button>
+        </nav>
       </li>
     {% endfor %}
     </ul>
     <script>
       const bookmarkList = document.querySelector('.bookmark-list');
       const form = document.querySelector('.add_bookmark');
+      const deleteButtons = document.querySelectorAll('.delete_bookmark');
+
+      deleteButtons.forEach((deleteButton) => {
+        deleteButton.addEventListener('click', (event) => {
+          event.preventDefault();
+          const headers = new Headers();
+          const url = deleteButton.dataset.url;
+          headers.set('Content-Type', 'application/json');
+          const body = JSON.stringify({
+            url,
+          });
+          fetch('/bookmarks', {
+            method: 'DELETE',
+            headers,
+            body,
+          })
+            .then(r => r.json())
+            .then(r => {
+              window.location.reload();
+            })
+            .catch(err => console.log(err))
+        });
+      })
 
       form.addEventListener('submit', (event) => {
         event.preventDefault();

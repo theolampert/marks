@@ -11,7 +11,6 @@ body {
 }
 
 .bookmark {
-  margin-bottom: 1.25rem;
   list-style: none;
 }
 
@@ -37,6 +36,14 @@ body {
   padding-right: 10px;
   padding-bottom: 3px;
   border-radius: 12px;
+}
+
+.bookmark__controls {
+  display: inline-block;
+}
+
+button {
+  cursor: pointer;
 }
 
 .add_bookmark {

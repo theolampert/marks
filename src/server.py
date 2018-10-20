@@ -1,7 +1,7 @@
 import os
 import sqlite3
 
-from database import bootstrap, seed, create_bookmark, get_bookmarks, get_bookmarks_with_tag, get_tags
+from database import bootstrap, seed, create_bookmark, get_bookmarks, get_bookmarks_with_tag, get_tags, delete_bookmark
 from flask import Flask, g, jsonify, request, render_template
 
 app = Flask(__name__)
@@ -28,7 +28,6 @@ def setup_db():
 def index():
     cur = get_db().cursor()
     bookmarks = get_bookmarks(cur)
-    mark = get_bookmarks_with_tag(cur, 'fun')
     return render_template('index.html', bookmarks=bookmarks)
 
 
@@ -54,10 +53,16 @@ def all_bookmarks():
 @app.route('/bookmarks', methods=['POST'])
 def post_bookmarks():
     db = get_db()
-    cur = db.cursor()
     data = request.get_json()
-    create_bookmark(data['url'], data['tags'], cur)
-    db.commit()
+    create_bookmark(data['url'], data['tags'], db)
+    return jsonify(data)
+
+
+@app.route('/bookmarks', methods=['DELETE'])
+def delete_bookmarks():
+    db = get_db()
+    data = request.get_json()
+    delete_bookmark(data['url'], db)
     return jsonify(data)
 
 

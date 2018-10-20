@@ -16,11 +16,20 @@ def bootstrap(cursor):
         )''')
 
 
-def create_bookmark(url, tags, cursor):
+def create_bookmark(url, tags, db):
+    cursor = db.cursor()
     cursor.execute('INSERT INTO urls (url) VALUES (?)', (url,))
     for tag in tags:
         cursor.execute('INSERT OR IGNORE INTO tags (name) VALUES (?)', (tag,))
         cursor.execute('INSERT INTO tags_urls (url, tag) VALUES (?, ?)', (url, tag,))
+    db.commit()
+
+
+def delete_bookmark(url, db):
+    cursor = db.cursor()
+    cursor.execute('DELETE FROM urls WHERE url = ?', (url,))
+    cursor.execute('DELETE FROM tags_urls WHERE tags_urls.url = ?', (url,))
+    db.commit()
 
 
 def seed(db):
@@ -28,23 +37,23 @@ def seed(db):
     seeds = [
         {
             'url': 'https://teachyourselfcs.com',
-            'tags': [ 'books', 'programming', 'learning' ]
+            'tags': ['books', 'programming', 'learning']
         },
         {
             'url': 'https://xinyminutes.com',
-            'tags': [ 'programming', 'reference', 'cheat-sheet' ]
+            'tags': ['programming', 'reference', 'cheat-sheet']
         },
         {
             'url': 'http://protonmail.com',
-            'tags': [ 'email', 'privacy' ]
+            'tags': ['email', 'privacy']
         },
         {
             'url': 'http://github.com/something',
-            'tags': [ 'code', 'programming', 'email' ]
+            'tags': ['code', 'programming', 'email']
         },
         {
             'url': 'http://foobar.com',
-            'tags': [ 'fun', 'code' ]
+            'tags': ['fun', 'code']
         }
     ]
 
