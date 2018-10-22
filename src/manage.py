@@ -1,3 +1,4 @@
+import sys
 import click
 import json
 import sqlite3
@@ -12,7 +13,7 @@ from database import create_bookmark, get_bookmarks
 def export_json():
     cur = sqlite3.connect(DATABASE).cursor()
     data = json.dumps(get_bookmarks(cur))
-    print(data)     # send to stdout
+    sys.stdout.write(data)     # send to stdout
 
 
 @app.cli.command()
