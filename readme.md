@@ -33,3 +33,30 @@ docker-compose up (-d)
 ```
 
 Please make sure the `PROXY_HOST` is resolving correctly for TLS support.
+
+
+#### Management
+
+Right now you can export json using the following:
+```sh
+./scripts/manage.sh export-json > src/export.json
+```
+
+And import it like so:
+```sh
+./scripts/manage.sh import-json ./export.json
+```
+
+You can also download bookmark json from your remote instance using curl:
+```sh
+export TOKEN=$(curl -XPOST http://<your-instance>/login -d 'username=bob' -d 'password=secret')
+curl http://<your-instance>/bookmarks?token=$TOKEN > export.json
+```
+
+#### Roadmap
+
+- [ ] Ability to edit urls and tags
+- [ ] Browser extension clients
+- [ ] CLI client
+- [ ] Backup scripts and automated backups
+- [ ] Better import / export tools including more formats
