@@ -32,37 +32,6 @@ def delete_bookmark(url, db):
     db.commit()
 
 
-def seed(db):
-    cursor = db.cursor()
-    seeds = [
-        {
-            'url': 'https://teachyourselfcs.com',
-            'tags': ['books', 'programming', 'learning']
-        },
-        {
-            'url': 'https://xinyminutes.com',
-            'tags': ['programming', 'reference', 'cheat-sheet']
-        },
-        {
-            'url': 'http://protonmail.com',
-            'tags': ['email', 'privacy']
-        },
-        {
-            'url': 'http://github.com/something',
-            'tags': ['code', 'programming', 'email']
-        },
-        {
-            'url': 'http://foobar.com',
-            'tags': ['fun', 'code']
-        }
-    ]
-
-    for seed in seeds:
-        print(seed)
-        create_bookmark(seed['url'], seed['tags'], cursor)
-        db.commit()
-
-
 def get_tags(cursor):
     tags = []
     for row in cursor.execute('SELECT * FROM tags'):

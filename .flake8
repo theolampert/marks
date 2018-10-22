@@ -1,4 +1,4 @@
 [flake8]
-ignore = E127,E128,E123,E133,E501,C901,E702
+ignore = E127,E128,E123,E133,E501,C901,E702,F403
 exclude = .git,__pycache__,tmp,.undodir
 max-complexity = 10
