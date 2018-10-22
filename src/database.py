@@ -63,7 +63,6 @@ def seed(db):
         db.commit()
 
 
-
 def get_tags(cursor):
     tags = []
     for row in cursor.execute('SELECT * FROM tags'):
@@ -92,6 +91,7 @@ def get_bookmarks(cursor):
             'tags': bookmark[1].split(',')
             })
     return bookmarks
+
 
 def get_bookmarks_with_tag(cursor, tag):
     bookmarks = []

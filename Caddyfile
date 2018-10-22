@@ -14,6 +14,7 @@
     policy round_robin
   }
 
+  minify
   gzip
   tls {$PROXY_TLS}
 

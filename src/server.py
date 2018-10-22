@@ -1,7 +1,7 @@
 import os
 import sqlite3
 
-from database import bootstrap, seed, create_bookmark, get_bookmarks, get_bookmarks_with_tag, get_tags, delete_bookmark
+from database import bootstrap, create_bookmark, get_bookmarks, get_bookmarks_with_tag, get_tags, delete_bookmark
 from flask import Flask, g, jsonify, request, render_template
 
 app = Flask(__name__)
@@ -21,7 +21,6 @@ def setup_db():
     db = get_db()
     cur = db.cursor()
     bootstrap(cur)
-    # seed(db)
 
 
 @app.route('/')
