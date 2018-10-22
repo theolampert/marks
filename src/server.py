@@ -2,6 +2,7 @@ import os
 import sqlite3
 
 from database import bootstrap, create_bookmark, get_bookmarks, get_bookmarks_with_tag, get_tags, delete_bookmark
+
 from flask import Flask, g, jsonify, request, render_template
 
 app = Flask(__name__)
