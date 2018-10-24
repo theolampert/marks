@@ -1,10 +1,11 @@
 import sqlite3
 
-from flask import g, jsonify, request, render_template
-
 from app import app
 from config import DATABASE
-from database import bootstrap, create_bookmark, get_bookmarks, get_bookmarks_with_tag, get_tags, delete_bookmark
+from database import (bootstrap, create_bookmark, delete_bookmark,
+                      edit_bookmark, get_bookmarks, get_bookmarks_with_tag,
+                      get_tags)
+from flask import g, jsonify, render_template, request
 
 
 def get_db():
@@ -50,10 +51,18 @@ def all_bookmarks():
 
 
 @app.route('/bookmarks', methods=['POST'])
-def post_bookmarks():
+def post_bookmark():
     db = get_db()
     data = request.get_json()
     create_bookmark(data['url'], data['tags'], db)
+    return jsonify(data)
+
+
+@app.route('/bookmarks', methods=['PUT'])
+def put_bookmark():
+    db = get_db()
+    data = request.get_json()
+    edit_bookmark(data['url'], data['tags'], db)
     return jsonify(data)
 
 

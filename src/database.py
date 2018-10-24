@@ -25,6 +25,16 @@ def create_bookmark(url, tags, db):
     db.commit()
 
 
+# Just like create but overrides everything
+def edit_bookmark(url, tags, db):
+    cursor = db.cursor()
+    cursor.execute('INSERT OR IGNORE INTO urls (url) VALUES (?)', (url,))
+    for tag in tags:
+        cursor.execute('INSERT OR IGNORE INTO tags (name) VALUES (?)', (tag,))
+        cursor.execute('INSERT OR IGNORE INTO tags_urls (url, tag) VALUES (?, ?)', (url, tag,))
+    db.commit()
+
+
 def delete_bookmark(url, db):
     cursor = db.cursor()
     cursor.execute('DELETE FROM urls WHERE url = ?', (url,))
