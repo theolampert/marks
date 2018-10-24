@@ -14,8 +14,6 @@
     policy round_robin
   }
 
-  push /static/style.css
-
   cache
   minify
   gzip
