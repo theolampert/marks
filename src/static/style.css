@@ -44,8 +44,30 @@ body {
 
 button {
   cursor: pointer;
+  padding: 2px;
 }
 
 .add_bookmark {
   margin-bottom: 20px;
 }
+
+
+.night-mode {
+  background-color: #10131d;
+}
+
+.night-mode button {
+  border: none;
+  background-color: #020203;
+  color: #fff3;
+}
+
+.night-mode .bookmark__tag {
+  background-color: #020203;
+  color: #fff3;
+}
+
+.night-mode .bookmark__link {
+  color: #fff3;
+}
+

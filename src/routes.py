@@ -31,17 +31,17 @@ def index():
     return render_template('index.html', bookmarks=bookmarks)
 
 
+@app.route('/tags')
+def all_tags():
+    cur = get_db().cursor()
+    return jsonify(get_tags(cur))
+
+
 @app.route('/tags/<tag>')
 def get_bookmark_with_tag(tag):
     cur = get_db().cursor()
     bookmarks = get_bookmarks_with_tag(cur, tag)
     return render_template('index.html', bookmarks=bookmarks)
-
-
-@app.route('/tags')
-def all_tags():
-    cur = get_db().cursor()
-    return jsonify(get_tags(cur))
 
 
 @app.route('/bookmarks')

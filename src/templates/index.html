@@ -5,6 +5,7 @@
   </head>
   <title>Marks</title>
   <body>
+    <button class="toggle-color-mode">🌕</button>
     <form class="add_bookmark">
       <input class="add_bookmark__bookmark" placeholder="bookmark" type="text">
       <input class="add_bookmark__tags" placeholder="tags" type="text">
@@ -18,69 +19,12 @@
         <a class="bookmark__tag" href="/tags/{{ tag }}">{{ tag }}</a>
         {% endfor %}
         <nav class="bookmark__controls">
-          <button>Edit</button>
-          <button class="delete_bookmark" data-url="{{ bookmark.url }}">Delete</button>
+          <button>✎</button>
+          <button class="delete_bookmark" data-url="{{ bookmark.url }}">╳</button>
         </nav>
       </li>
     {% endfor %}
     </ul>
-    <script>
-      const bookmarkList = document.querySelector('.bookmark-wrapper');
-      const form = document.querySelector('.add_bookmark');
-      const deleteButtons = document.querySelectorAll('.delete_bookmark');
-
-      deleteButtons.forEach((deleteButton) => {
-        deleteButton.addEventListener('click', (event) => {
-          event.preventDefault();
-          const headers = new Headers();
-          const url = deleteButton.dataset.url;
-          headers.set('Content-Type', 'application/json');
-          const body = JSON.stringify({
-            url,
-          });
-          fetch('/bookmarks', {
-            method: 'DELETE',
-            headers,
-            body,
-          })
-            .then(r => r.json())
-            .then(r => {
-              window.location.reload();
-            })
-            .catch(err => console.log(err))
-        });
-      })
-
-      form.addEventListener('submit', (event) => {
-        event.preventDefault();
-        const url = form.children[0].value;
-        const tags = form.children[1].value.split(' ');
-        const headers = new Headers();
-        headers.set('Content-Type', 'application/json');
-        const body = JSON.stringify({
-          url,
-          tags,
-        });
-
-        fetch('/bookmarks', {
-          method: 'POST',
-          headers,
-          body,
-        })
-          .then(r => r.json())
-          .then(r => {
-            const bmWrapper = document.createElement('li');
-            bmWrapper.classList.add('bookmark');
-  
-            bmWrapper.innerHTML = `
-              <a class="bookmark__link" href="${r.url}">${r.url}</a>
-              ${r.tags.map(t => `<a class="bookmark__tag" href="/tags/${t}">${t}</a>`).join('')}
-            `;
- 
-            bookmarkList.appendChild(bmWrapper);
-          })
-          .catch(err => console.log(err))
-      });
-    </script>
+    <script src="/static/main.js"></script>
   </body>
 </html>
