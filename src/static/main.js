@@ -6,6 +6,7 @@ const bookmarkLinks = document.querySelectorAll('.bookmark__link');
 
 function enableColorMode() {
   const colorModeButton = document.querySelector('.toggle-color-mode');
+  document.body.classList.contains('night-mode')
 
   // Nightmode
   if (!!window.localStorage.getItem('night-mode')) {
@@ -13,8 +14,17 @@ function enableColorMode() {
   }
 
   colorModeButton.addEventListener('click', () => {
-    document.body.classList.toggle('night-mode');
-    window.localStorage.setItem('night-mode', document.body.classList.includes('night-mode'));
+    const body = document.body;
+    const isNightMode = body.classList.contains('night-mode');
+
+    if (!isNightMode) {
+      body.classList.add('night-mode');
+      localStorage.setItem('night-mode', true);
+    } else {
+      body.classList.remove('night-mode');
+      localStorage.removeItem('night-mode');
+    }
+
   });
 }
 
