@@ -14,7 +14,6 @@ body {
   list-style: none;
 }
 
-
 .bookmark__link {
   margin-bottom: 0.3125rem;
   display: inline-block;
@@ -47,10 +46,14 @@ button {
   padding: 2px;
 }
 
+.toggle-color-mode {
+  position: absolute;
+  right: 20px;
+}
+
 .add_bookmark {
   margin-bottom: 20px;
 }
-
 
 .night-mode {
   background-color: #10131d;
