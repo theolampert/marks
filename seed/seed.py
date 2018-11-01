@@ -5,7 +5,7 @@ fake = Faker()
 
 tag_list = ['cs', 'programming', 'color', 'learning', 'design', 'architecture',
         'bookmarks', 'own-project', 'open-source', 'read-later', 'queue',
-        'a2-german', 'german', 'german-lessions']
+        'a2-german', 'german', 'german-lessons']
 
 bookmarks = []
 
