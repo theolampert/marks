@@ -14,7 +14,6 @@
     policy round_robin
   }
 
-  cache
   minify
   gzip
   tls {$PROXY_TLS}
