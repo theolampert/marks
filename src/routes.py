@@ -56,12 +56,14 @@ def index():
 
 
 @app.route('/tags')
+@jwt_required
 def all_tags():
     cur = get_db().cursor()
     return jsonify(get_tags(cur))
 
 
 @app.route('/tags/<tag>')
+@jwt_required
 def get_bookmark_with_tag(tag):
     cur = get_db().cursor()
     bookmarks = get_bookmarks_with_tag(cur, tag)
@@ -69,12 +71,14 @@ def get_bookmark_with_tag(tag):
 
 
 @app.route('/bookmarks')
+@jwt_required
 def all_bookmarks():
     cur = get_db().cursor()
     return jsonify(get_bookmarks(cur))
 
 
 @app.route('/bookmarks', methods=['POST'])
+@jwt_required
 def post_bookmark():
     db = get_db()
     data = request.get_json()
@@ -83,6 +87,7 @@ def post_bookmark():
 
 
 @app.route('/bookmarks', methods=['PUT'])
+@jwt_required
 def put_bookmark():
     db = get_db()
     data = request.get_json()
@@ -91,6 +96,7 @@ def put_bookmark():
 
 
 @app.route('/bookmarks', methods=['DELETE'])
+@jwt_required
 def delete_bookmarks():
     db = get_db()
     data = request.get_json()
