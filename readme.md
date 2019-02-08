@@ -19,10 +19,9 @@ The following are available:
 FLASK_APP=server.py # This will likely never change unless you want to customise the entry point
 FLASK_DEBUG=1 # Useful for development
 DATABASE=database/example.db
-PROXY_HOST=hostname
-PROXY_TLS='email@example.com' or 'off'
 USERNAME=bob
 PASSWORD=secret
+SECRET_KEY=supersecretkey
 ```
 
 From there you can simply run the following:
@@ -31,9 +30,6 @@ From there you can simply run the following:
 docker-compose build
 docker-compose up (-d)
 ```
-
-Please make sure the `PROXY_HOST` is resolving correctly for TLS support.
-
 
 #### Management
 

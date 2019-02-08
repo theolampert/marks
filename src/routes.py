@@ -1,11 +1,14 @@
 import sqlite3
 
 from app import app
-from config import DATABASE
+from config import DATABASE, USERNAME, PASSWORD
 from database import (bootstrap, create_bookmark, delete_bookmark,
                       edit_bookmark, get_bookmarks, get_bookmarks_with_tag,
                       get_tags)
-from flask import g, jsonify, render_template, request
+from flask import g, jsonify, render_template, request, redirect
+from flask_jwt_extended import (
+    jwt_required, create_access_token
+)
 
 
 def get_db():
@@ -24,7 +27,28 @@ def setup_db():
     bootstrap(cur)
 
 
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
+
+@app.route('/auth', methods=['POST'])
+def auth():
+    username = request.form['username']
+    password = request.form['password']
+
+    if username != USERNAME or password != PASSWORD:
+        return redirect('/login')
+
+    access_token = create_access_token(identity=username)
+    redirect_to_index = redirect('/')
+    response = app.make_response(redirect_to_index)
+    response.set_cookie('access_token_cookie', value=access_token)
+    return response
+
+
 @app.route('/')
+@jwt_required
 def index():
     cur = get_db().cursor()
     bookmarks = get_bookmarks(cur)

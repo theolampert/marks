@@ -3,23 +3,9 @@ services:
   web:
     build: .
     ports:
-      - '5000'
+      - '80:5000'
     env_file:
       - .env
     volumes:
       - ./database:/usr/src/app/database
       - ./src:/usr/src/app
-  proxy:
-    image: 'abiosoft/caddy-docker'
-    build:
-      context: github.com/abiosoft/caddy-docker.git
-      args:
-        plugins: 'login,jwt,minify,cache'
-    ports:
-      - '80:80'
-      - '443:443'
-    volumes:
-      - ./Caddyfile:/etc/Caddyfile
-      - ./.caddy:/root/.caddy
-    env_file:
-      - .env
